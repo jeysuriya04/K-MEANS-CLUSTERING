@@ -1,0 +1,63 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Jan  2 00:34:51 2021
+
+@author: Jey Sreehar
+"""
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+df1 = pd.read_csv('C:/Users/Jey Sreehar/Downloads/ml algorithms/P14-Part2-Regression/P14-Part2-Regression/Section 6 - Simple Linear Regression/Python/Salary_Data.csv')
+print(df1)
+X = np.array(df1)
+print(X)
+
+
+import random
+init_centroids = random.sample(range(0, len(df1)), 3)
+print(init_centroids)
+
+centroids = []
+for i in init_centroids:
+    centroids.append(df1.loc[i])
+print(centroids)
+
+centroids = np.array(centroids)
+
+def calc_distance(X1, X2):
+    return(sum((X1 - X2)**2))**0.5
+
+def findClosestCentroids(ic, X):
+    assigned_centroid = []
+    for i in X:
+        distance=[]
+        for j in ic:
+            distance.append(calc_distance(i, j))
+        assigned_centroid.append(np.argmin(distance))
+    return assigned_centroid
+
+get_centroids = findClosestCentroids(centroids, X)
+print(get_centroids)
+
+def calc_centroids(clusters, X):
+    new_centroids = []
+    new_df = pd.concat([pd.DataFrame(X), pd.DataFrame(clusters, columns=['cluster'])],
+                      axis=1)
+    for c in set(new_df['cluster']):
+        current_cluster = new_df[new_df['cluster'] == c][new_df.columns[:-1]]
+        cluster_mean = current_cluster.mean(axis=0)
+        new_centroids.append(cluster_mean)
+    return new_centroids
+
+for i in range(10):
+    get_centroids = findClosestCentroids(centroids, X)
+    centroids = calc_centroids(get_centroids, X)
+    #print(centroids)
+    plt.figure()
+    plt.scatter(np.array(centroids)[:, 0], np.array(centroids)[:, 1], color='black')
+    plt.scatter(X[:, 0], X[:, 1], alpha=0.1)
+    plt.show()
+    
+    
