@@ -1,5 +1,5 @@
 
-How the K-means algorithm works:
+# How the K-means algorithm works:
 
 
 To process the learning data, the K-means algorithm in data mining starts with a first group of randomly selected centroids, which are used as the beginning points for every cluster, and then performs iterative (repetitive) calculations to optimize the positions of the centroids
